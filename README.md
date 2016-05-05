@@ -23,7 +23,7 @@ BRA also utilizes the following modules developed for Python:
 
     conda install biopython
 
-BRA requires PEAR to be download and located in your path. PEAR does have dependacies
+BRA requires PEAR to be download and located in your path. PEAR does have dependencies
 that need to be installed if they are not already on your computer:
 
     apt-get install build-essential autoconf automake libtool
@@ -34,10 +34,25 @@ that need to be installed if they are not already on your computer:
     make
     sudo make install
 
+    Zhang, J., Kobert, K., Flouri, T. and Stamatakis, A., 2014. PEAR: a fast and accurate Illumina Paired-End reAd mergeR. Bioinformatics, 30(5), pp.614-620.
+
 
 Alternatively, MACOSX users can install it using [homebrew](http://brew.sh/):
 
     brew install pear
+
+You will also need to have blastn installed in your $PATH. MACOSX user can install it using:
+
+    brew install blastn
+
+Alternatively, you can install it by first downloading the latest version from [NCBI BLAST Site] (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/). Then following their commands
+for installing on your local computer.
+
+Once installed, you will need to create a database. This can be done by following these commands:
+
+    makeblastdb -in databasename.fna -dbtype nucl -out outputname.fna
+
+You will need to give this PATH of these files with the --db_loc flag.
 
 
 BRA can be download from the github repository:
@@ -61,15 +76,19 @@ BRA requires the following user input:
 
 --o the output file name for the assebmled contigs.
 
+--db the name of the database file
+
+--db_loc the path to the database file
+
 The short version is:
 
-	BRA.py --D path/for/directory --F_fa path/to/Forward.fasta --F_qual path/to/Forward.abi --R_fa path/to/Reverse.fasta --R_qual path/to/Reverse.abi --o outputname
+	BRA.py --D path/for/directory --F_fa path/to/Forward.fasta --F_qual path/to/Forward.abi --R_fa path/to/Reverse.fasta --R_qual path/to/Reverse.abi --o outputname --db databasename.fna --db_loc path/to/database
 
 To help users with running BRA, sample data is provided (F_fa, F_qual, R_fa, R_qual).
-    BRA.py --D ~/Documents --F_fa test_files/F_fa --F_qual test_files/F_qual --R_fa test_files/R_fa --R_qual test_files/R_qual --o output
+    BRA.py --D ~/ --F_fa test_files/F_fa --F_qual test_files/F_qual --R_fa test_files/R_fa --R_qual test_files/R_qual --o output --db LSUCC_allBORisolate.fna --db_loc ~/test_files
 
-Output will be provided in the directory called Output. Within Output, there where
-be:
+**Output will be provided in the directory called Output. Within Output, there where
+be:**
 
 output.assembled.fastq          -->Contains the assembled contigs
 
@@ -90,27 +109,32 @@ RC.fastq                        -->Reverse complement read in Fastq format
 
 blast_results.xml               -->Unparsed BLAST results
 
-query_id                        -->Parsed BLAST results
+query_id.fasta                  -->Fasta file of the contig
+
+query_id_blastresult            -->Blast results in text format
 
 **Files containing the parsed BLAST results will be returned with the query ID in text format**
 
-example BLAST OUTPUT will look like:
+Example BLAST OUTPUT will look like:
 
-    gi|347440079|gb|JN119202.1| Uncultured marine bacterium clone GD-C5 16S ribosomal RNA gene, partial sequence
-    1146.0
+    > LSUCC267
+    Length=1333
 
-    gi|268308535|gb|FJ820391.1| Uncultured bacterium clone S0008 16S ribosomal RNA gene, partial sequence
-    1146.0
+     Score = 957 bits (518),  Expect = 0.0
+     Identities = 592/627 (94%), Gaps = 8/627 (1%)
+     Strand=Plus/Minus
 
-    106.0
+    Query  168   TTCACCGCGGCAAAGTCG-TCCACGTATAGCT-GCGATTCCACGATGATGCCCTCCACTG  225
+                 ||||||||||| | |  | ||| || ||  || |||||||| |  | |||||||| | |
+    Sbjct  1258  TTCACCGCGGC-ATGCTGATCCGCG-ATTACTAGCGATTCCGCCTTCATGCCCTCGAGTT  1201
 
-    gi|268308529|gb|FJ820385.1| Uncultured bacterium clone H0046 16S ribosomal RNA gene, partial sequence
-    1146.0
+    Query  226   GCAGAGGACAATCCGAAC-GACTCCTACTTTTGGAGA-CAGTGTCACCCTTGCGGGGTCG  283
+                 |||||||||||||||||| ||   | |||||||||||  ||  |||||||||||||||||
+    Sbjct  1200  GCAGAGGACAATCCGAACTGA-GACGACTTTTGGAGATTAG-CTCACCCTTGCGGGGTCG  1143
 
-    106.0
-
-
-
+    Query  284   CTGCTCACTGTCATCGCCATTGTAGCACGTGTGTAGCCCAGCCTGTAAGGGCCATGAGGA  343
+                 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    Sbjct  1142  CTGCTCACTGTCATCGCCATTGTAGCACGTGTGTAGCCCAGCCTGTAAGGGCCATGAGGA  1083
 
 
 

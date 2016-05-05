@@ -18,6 +18,7 @@ import shlex
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
 import time
+import pdb
 
 
 def askingforfiles():
@@ -59,6 +60,18 @@ def askingforfiles():
         help="Provide the outfile name for your assembled contigs",
         type=str
     )
+    parser.add_argument(
+        "--db",
+        required=True,
+        help="Provide the database file name",
+        type=str
+        )
+    parser.add_argument(
+        "--db_loc",
+        required=True,
+        help="Provide the database file path",
+        type=str
+        )
     return parser.parse_args()
 
 
@@ -148,19 +161,34 @@ def correcting(output):
     new.close()
 
 
-def BestBlastHit(output):
-    for record in SeqIO.parse(output+".assembled.fastq_corr", 'fastq'):
-        result_handle = NCBIWWW.qblast("blastn", "refseq_genomic", record.format("fasta"))
-        blast_records = NCBIXML.parse(result_handle)
-        for result in blast_records:
-            for alignment in result.alignments:
-                with open(result.query, "w") as name:
-                    name.write(alignment.title+"\n")
-                    for hsp in alignment.hsps:
-                        name.write(str(hsp.score)+"\n")
-                        name.write("\n")
-                        name.close()
-                        blast_records.close()
+def fnafiles(fastq):
+    seqid = []
+    for record in SeqIO.parse(fastq+".assembled.fastq_corr", 'fastq'):
+        seqid.append(record.id)
+        with open(record.id+".fasta", "w") as fna:
+            SeqIO.write(record, fna, "fasta")
+    return seqid
+
+
+def BestBlastHit(seqid, db, output, loc, D):
+    os.chdir(loc)
+    for seq in seqid:
+        text_command = 'blastn -db {} -query {} -out {} -max_hsps 2'.format(
+            db,
+            D+"/"+seq+".fasta",
+            D+"/"+seq+"_blastresult"
+            )
+        cmd = shlex.split(text_command)
+        my_proc = subprocess.run(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True
+            )
+        if my_proc.returncode == 0:
+            pass
+        else:
+            raise IOError("An Error has been raised\n{}".format(my_proc.stderr))
 
 
 def main():
@@ -181,7 +209,8 @@ def main():
     F_record.close()
     contigmaker(path.o)
     correcting(path.o)
-    BestBlastHit(path.o)
+    seqid = fnafiles(path.o)
+    BestBlastHit(seqid, path.db, path.o, path.db_loc, X)
 
 
 if __name__ == '__main__':

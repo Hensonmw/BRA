@@ -87,7 +87,8 @@ The short version is:
 
 To help users with running BRA, sample data is provided (F_fa, F_qual, R_fa, R_qual, LSUCC_allBORisolate.fna).
 
-    BRA.py --D ~/ --F_fa test_files/F_fa --F_qual test_files/F_qual --R_fa test_files/R_fa --R_qual test_files/R_qual --o output --db LSUCC_allBORisolate.fna --db_loc ~/test_files
+    BRA.py --D ~/ --F_fa test_files/F_fa --F_qual test_files/F_qual --R_fa test_files/R_fa --R_qual test_files/R_qual --o output --db LSUCC_allBORisolate.fna --db_loc ~/BRA/test_files
+    **You may need to change the locations depending on where you download your file. This command is set up for running it from a your $HOME on a MACOSX. Make Sure you are within the BRA folder when you run the command.  
 
 **Output will be provided in the directory called Output. Within Output, there where
 be:**

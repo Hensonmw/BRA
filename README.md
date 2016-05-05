@@ -45,8 +45,8 @@ You will also need to have blastn installed in your $PATH. MACOSX user can insta
 
     brew install blastn
 
-Alternatively, you can install it by first downloading the latest version from
-[NCBI BLAST Site](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/). Then following their commands
+Alternatively, you can install it by downloading the latest version from
+[NCBI](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/). Then following their commands
 for installing on your local computer.
 
 Once installed, you will need to create a database. This can be done by following these commands:

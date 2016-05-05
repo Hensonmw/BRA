@@ -45,7 +45,8 @@ You will also need to have blastn installed in your $PATH. MACOSX user can insta
 
     brew install blastn
 
-Alternatively, you can install it by first downloading the latest version from [NCBI BLAST Site] (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/). Then following their commands
+Alternatively, you can install it by first downloading the latest version from
+[NCBI BLAST Site](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/). Then following their commands
 for installing on your local computer.
 
 Once installed, you will need to create a database. This can be done by following these commands:
@@ -84,7 +85,8 @@ The short version is:
 
 	BRA.py --D path/for/directory --F_fa path/to/Forward.fasta --F_qual path/to/Forward.abi --R_fa path/to/Reverse.fasta --R_qual path/to/Reverse.abi --o outputname --db databasename.fna --db_loc path/to/database
 
-To help users with running BRA, sample data is provided (F_fa, F_qual, R_fa, R_qual).
+To help users with running BRA, sample data is provided (F_fa, F_qual, R_fa, R_qual, LSUCC_allBORisolate.fna).
+
     BRA.py --D ~/ --F_fa test_files/F_fa --F_qual test_files/F_qual --R_fa test_files/R_fa --R_qual test_files/R_qual --o output --db LSUCC_allBORisolate.fna --db_loc ~/test_files
 
 **Output will be provided in the directory called Output. Within Output, there where
@@ -106,8 +108,6 @@ F.fastq                         -->Forward read in Fastq format
 R.fastq                         -->Reverse read in Fastq format
 
 RC.fastq                        -->Reverse complement read in Fastq format
-
-blast_results.xml               -->Unparsed BLAST results
 
 query_id.fasta                  -->Fasta file of the contig
 
